@@ -30,7 +30,7 @@ async function handleEvent(event) {
       console.log('位置情報以外')
       return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: '位置情報を送信してね'
+          text: '位置情報を送信してね!'
       })
     // return Promise.resolve(null);
   }
