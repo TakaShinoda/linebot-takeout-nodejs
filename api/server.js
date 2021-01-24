@@ -50,7 +50,7 @@ let yelpREST = axios.create({
     },
   })
 
-  yelpREST("/businesses/search", {
+  await yelpREST.get("/businesses/search", {
     params: {
       latitude: lat,
       longitude: lng,
@@ -70,9 +70,6 @@ let yelpREST = axios.create({
                 text: '近くにお店はありません！'
             })
         }
-
-
-          //コールバックで色々な処理
           // carouselは最大10
           let columns = [];
           for (var item of response.data.businesses) {
