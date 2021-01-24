@@ -57,7 +57,7 @@ let yelpREST = axios.create({
       radius: 500, // 半径500m
       term: "takeout",
       sort_by: "distance",
-      limit: 1,
+      limit: 10,
     },
   })
     .then(function (response) {
