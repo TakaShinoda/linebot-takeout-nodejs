@@ -1,8 +1,10 @@
 'use strict';
 require('dotenv').config();
 
+const axios = require('axios')
 const express = require('express');
 const line = require('@line/bot-sdk');
+const { response } = require('express');
 const PORT = process.env.PORT || 3000;
 
 const config = {
@@ -17,11 +19,11 @@ app.post('/webhook', line.middleware(config), (req, res) => {
     console.log(req.body.events);
 
     //ここのif分はdeveloper consoleの"接続確認"用なので削除して問題ないです。
-    if(req.body.events[0].replyToken === '00000000000000000000000000000000' && req.body.events[1].replyToken === 'ffffffffffffffffffffffffffffffff'){
-        res.send('Hello LINE BOT!(POST)');
-        console.log('疎通確認用');
-        return; 
-    }
+    // if(req.body.events[0].replyToken === '00000000000000000000000000000000' && req.body.events[1].replyToken === 'ffffffffffffffffffffffffffffffff'){
+    //     res.send('Hello LINE BOT!(POST)');
+    //     console.log('疎通確認用');
+    //     return; 
+    // }
 
     Promise
       .all(req.body.events.map(handleEvent))
@@ -31,14 +33,72 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 const client = new line.Client(config);
 
 async function handleEvent(event) {
-  if (event.type !== 'message' || event.message.type !== 'text') {
-    return Promise.resolve(null);
+  if (event.type !== 'message' || event.message.type !== 'location') {
+      console.log('位置情報以外')
+      return client.replyMessage(event.replyToken, {
+          type: 'text',
+          text: '位置情報を送信してね'
+      })
+    // return Promise.resolve(null);
   }
 
-  return client.replyMessage(event.replyToken, {
-    type: 'text',
-    text: event.message.text //実際に返信の言葉を入れる箇所
-  });
+// 緯度
+const lat = event.message.latitude
+// 経度
+const lng = event.message.longitude
+
+
+//   axios.get('https://api.yelp.com/v3/businesses/search')
+let yelpREST = axios.create({
+    baseURL: "https://api.yelp.com/v3/",
+    headers: {
+      Authorization: `Bearer ${process.env.YELP_API_KEY}`,
+      "Content-type": "application/json",
+    },
+  })
+
+  yelpREST("/businesses/search", {
+    params: {
+      latitude: lat,
+      longitude: lng,
+      radius: 500, // 半径500m
+      term: "takeout",
+      sort_by: "distance",
+      limit: 10,
+    },
+  })
+    .then(function (response) {
+        // handle success
+        console.log(response.data)
+          //コールバックで色々な処理
+          // carouselは最大10
+          let columns = [];
+          for (var item of response.data.businesses) {
+            columns.push({
+              "thumbnailImageUrl": item.image_url,
+              "title": item.alias,
+              "text": "test",
+              "actions": [{
+                "type": "uri",
+                "label": "yelpでみる",
+                "uri": item.url
+              }]
+            });
+          }
+        console.log(columns)
+        return client.replyMessage(event.replyToken, {
+            type: 'template',
+            altText: 'This is a carousel template',
+            template: {
+                type: 'carousel',
+                columns: columns
+            }
+        });
+    })
+    .catch(function (error) {
+        // handle error
+        // console.log(error);
+    })
 }
 
 app.listen(PORT);
