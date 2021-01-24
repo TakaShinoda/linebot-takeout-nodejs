@@ -30,7 +30,7 @@ async function handleEvent(event) {
       console.log('位置情報以外')
       return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: '位置情報を送信してね'
+          text: '位置情報を送信してね！'
       })
     // return Promise.resolve(null);
   }
@@ -42,7 +42,7 @@ const lng = event.message.longitude
 
 
 //   axios.get('https://api.yelp.com/v3/businesses/search')
-let yelpREST = await axios.create({
+let yelpREST = axios.create({
     baseURL: "https://api.yelp.com/v3/",
     headers: {
       Authorization: `Bearer ${process.env.YELP_API_KEY}`,
@@ -67,7 +67,7 @@ let yelpREST = await axios.create({
         if(response.data.total === 0) {
             return client.replyMessage(event.replyToken, {
                 type: 'text',
-                text: '近くにお店はありません'
+                text: '近くにお店はありません！'
             })
         }
 
