@@ -70,6 +70,15 @@ let yelpREST = axios.create({
     .then(function (response) {
         // handle success
         console.log(response.data)
+
+        if(response.data.total === 0) {
+            return client.replyMessage(event.replyToken, {
+                type: 'text',
+                text: '近くにお店はありません'
+            })
+        }
+
+
           //コールバックで色々な処理
           // carouselは最大10
           let columns = [];
@@ -77,7 +86,7 @@ let yelpREST = axios.create({
             columns.push({
               "thumbnailImageUrl": item.image_url,
               "title": item.alias,
-              "text": "test",
+              "text": '⭐️' + item.rating,
               "actions": [{
                 "type": "uri",
                 "label": "yelpでみる",
@@ -88,7 +97,7 @@ let yelpREST = axios.create({
         console.log(columns)
         return client.replyMessage(event.replyToken, {
             type: 'template',
-            altText: 'This is a carousel template',
+            altText: 'This is a carousel message',
             template: {
                 type: 'carousel',
                 columns: columns
