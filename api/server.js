@@ -85,14 +85,18 @@ let yelpREST = axios.create({
             });
           }
         console.log(columns)
-        return client.replyMessage(event.replyToken, {
+        return client.replyMessage(event.replyToken, [
+          {
+            type: 'text',
+            text: 'おいしそうだね！',},
+          {
             type: 'template',
-            altText: 'This is a carousel message',
+            altText: '店舗情報を送信しました！',
             template: {
                 type: 'carousel',
                 columns: columns
             }
-        });
+        }]);
     })
     .catch(function (error) {
         // handle error
