@@ -5,4 +5,12 @@
 <img width="270" alt="スクリーンショット 2021-01-24 20 11 24" src="https://user-images.githubusercontent.com/45593212/105628485-96936900-5e80-11eb-8117-181b727097b5.png">
 
 
-![IMG_2683](https://user-images.githubusercontent.com/45593212/105628566-0144a480-5e81-11eb-8d75-4ebc84b7750a.jpg)
+![iOS の画像](https://user-images.githubusercontent.com/45593212/105713475-8e116000-5f5e-11eb-81d7-d164d1b4e655.png)
+
+<br>
+
+# 主に使用した技術
+- node.js
+- yelp API
+- LINE Messaging API
+- vercel
