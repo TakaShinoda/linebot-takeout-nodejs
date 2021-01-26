@@ -88,7 +88,8 @@ let yelpREST = axios.create({
         return client.replyMessage(event.replyToken, [
           {
             type: 'text',
-            text: 'おいしそうだね！',},
+            text: 'おいしそうだね！'
+          },
           {
             type: 'template',
             altText: '店舗情報を送信しました！',
