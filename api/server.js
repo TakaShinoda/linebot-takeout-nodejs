@@ -14,7 +14,9 @@ const config = {
 
 const app = express();
 
-app.get('/', (req, res) => res.send('Hello LINE BOT!(GET)')); //ブラウザ確認用(無くても問題ない)
+//ブラウザ確認用(無くても問題ない)
+app.get('/', (req, res) => res.send('Hello LINE BOT!(GET)'));
+
 app.post('/webhook', line.middleware(config), (req, res) => {
     console.log(req.body.events);
 
@@ -32,17 +34,14 @@ async function handleEvent(event) {
           type: 'text',
           text: '位置情報を送信してね！'
       })
-    // return Promise.resolve(null);
   }
 
-// 緯度
-const lat = event.message.latitude
-// 経度
-const lng = event.message.longitude
+  // 緯度
+  const lat = event.message.latitude
+  // 経度
+  const lng = event.message.longitude
 
-
-//   axios.get('https://api.yelp.com/v3/businesses/search')
-let yelpREST = axios.create({
+  let yelpREST = axios.create({
     baseURL: "https://api.yelp.com/v3/",
     headers: {
       Authorization: `Bearer ${process.env.YELP_API_KEY}`,
@@ -104,9 +103,6 @@ let yelpREST = axios.create({
         console.log(error);
     })
 }
-
-// app.listen(PORT);
-// console.log(`Server running at ${PORT}`);
 
 (process.env.NOW_REGION) ? module.exports = app : app.listen(PORT);
 console.log(`Server running at ${PORT}`);
