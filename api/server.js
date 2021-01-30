@@ -29,7 +29,6 @@ const client = new line.Client(config);
 
 async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'location') {
-      console.log('位置情報以外')
       return client.replyMessage(event.replyToken, {
           type: 'text',
           text: '位置情報を送信してね！'
@@ -62,7 +61,6 @@ async function handleEvent(event) {
     .then(function (response) {
         // handle success
         console.log(response.data)
-
         if(response.data.total === 0) {
             return client.replyMessage(event.replyToken, {
                 type: 'text',
@@ -71,7 +69,7 @@ async function handleEvent(event) {
         }
           // carouselは最大10
           let columns = [];
-          for (var item of response.data.businesses) {
+          for (let item of response.data.businesses) {
             columns.push({
               "thumbnailImageUrl": item.image_url,
               "title": item.alias,
