@@ -15,14 +15,12 @@ const config = {
 const app = express();
 
 //ブラウザ確認用(無くても問題ない)
-app.get('/', (req, res) => res.send('Hello LINE BOT!(GET)'));
+// app.get('/', (req, res) => res.send('Hello LINE BOT!(GET)'));
 
 app.post('/webhook', line.middleware(config), (req, res) => {
-    console.log(req.body.events);
-
-    Promise
-      .all(req.body.events.map(handleEvent))
-      .then((result) => res.json(result));
+  Promise
+    .all(req.body.events.map(handleEvent))
+    .then((result) => res.json(result));
 });
 
 const client = new line.Client(config);
@@ -60,7 +58,6 @@ async function handleEvent(event) {
   })
     .then(function (response) {
         // handle success
-        console.log(response.data)
         if(response.data.total === 0) {
             return client.replyMessage(event.replyToken, {
                 type: 'text',
@@ -103,4 +100,4 @@ async function handleEvent(event) {
 }
 
 (process.env.NOW_REGION) ? module.exports = app : app.listen(PORT);
-console.log(`Server running at ${PORT}`);
+// console.log(`Server running at ${PORT}`);
