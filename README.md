@@ -2,6 +2,8 @@
 
 位置情報からテイクアウト可能なお店を教えてくれるLINEbotです。
 
+QRコードを読みとってください
+
 <img width="270" alt="スクリーンショット 2021-01-24 20 11 24" src="https://user-images.githubusercontent.com/45593212/105628485-96936900-5e80-11eb-8117-181b727097b5.png">
 
 
