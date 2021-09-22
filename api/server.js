@@ -61,7 +61,7 @@ async function handleEvent(event) {
         if(response.data.total === 0) {
             return client.replyMessage(event.replyToken, {
                 type: 'text',
-                text: 'ごめんなさい。近くにお店はありませんでした！'
+                text: 'ごめんなさい。近くにお店はありませんでした'
             })
         }
           // carouselは最大10
